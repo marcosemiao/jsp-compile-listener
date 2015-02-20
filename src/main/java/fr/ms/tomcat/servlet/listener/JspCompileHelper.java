@@ -5,11 +5,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Executor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 final class JspCompileHelper {
 
@@ -35,7 +33,7 @@ final class JspCompileHelper {
 
   static HttpServletRequest createHttpServletRequest() {
     final InvocationHandler handler = new InvocationHandler() {
-      @Override
+
       public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final String methodName = method.getName();
         /**
@@ -59,29 +57,5 @@ final class JspCompileHelper {
 
     return (HttpServletRequest) Proxy.newProxyInstance(JspCompileHelper.class.getClassLoader(),
         new Class<?>[]{HttpServletRequest.class}, handler);
-  }
-
-  static HttpServletResponse createHttpServletResponse() {
-    final InvocationHandler handler = new InvocationHandler() {
-      @Override
-      public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        return null;
-      }
-    };
-
-    return (HttpServletResponse) Proxy.newProxyInstance(JspCompileHelper.class.getClassLoader(),
-        new Class<?>[]{HttpServletResponse.class}, handler);
-  }
-
-  static Executor createSyncExecutor() {
-    final Executor executor = new Executor() {
-
-      @Override
-      public void execute(final Runnable command) {
-        command.run();
-      }
-    };
-
-    return executor;
   }
 }

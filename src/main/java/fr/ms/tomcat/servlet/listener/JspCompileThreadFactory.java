@@ -7,17 +7,16 @@ class JspCompileThreadFactory implements ThreadFactory {
 
   private final ThreadFactory threadFactory;
 
-  private String name;
+  private final String name;
 
   {
     threadFactory = Executors.defaultThreadFactory();
   }
 
-  JspCompileThreadFactory(String name) {
+  JspCompileThreadFactory(final String name) {
     this.name = name;
   }
 
-  @Override
   public Thread newThread(final Runnable r) {
     final Thread newThread = threadFactory.newThread(r);
 
