@@ -67,7 +67,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<!-- Plugin permettant de générer le code source -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
@@ -82,7 +81,6 @@
 					</executions>
 				</plugin>
 
-				<!-- Plugin permettant de générer la javadoc -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
@@ -97,7 +95,6 @@
 					</executions>
 				</plugin>
 
-				<!-- Plugin permettant de signer les artifacts -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
@@ -113,7 +110,17 @@
 					</executions>
 				</plugin>
 
-				<!-- Plugin JRebel - permet de deployer a chaud -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<useReleaseProfile>false</useReleaseProfile>
+					</configuration>
+				</plugin>
+
+
 				<plugin>
 					<groupId>org.zeroturnaround</groupId>
 					<artifactId>jrebel-maven-plugin</artifactId>
@@ -130,19 +137,16 @@
 		</pluginManagement>
 
 		<plugins>
-			<!-- Plugin permettant de générer le code source -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 			</plugin>
 
-			<!-- Plugin permettant de générer la javadoc -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 
-			<!-- Plugin permettant de signer les artifacts -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
