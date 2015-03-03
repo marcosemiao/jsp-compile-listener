@@ -2,115 +2,71 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>fr.ms.tomcat.servlet.listener</groupId>
+	<groupId>com.github.marcosemiao.tomcat.listener</groupId>
 	<artifactId>jsp-compile-listener</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>jar</packaging>
 
-	<name>Tomcat Servlet Listener : Jsp Compile Listener</name>
+	<name>Tomcat Listener : Jsp Compile Listener</name>
+
+	<description>Listener web to compile the JSP for startup (all versions before tomcat 8)</description>
+
+	<url>https://github.com/marcosemiao/jsp-compile-listener</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Marco Semiao</name>
+			<url>https://marcosemiao4j.wordpress.com</url>
+			<organizationUrl>https://github.com/marcosemiao/jsp-compile-listener</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:marcosemiao/jsp-compile-listener.git</connection>
+		<developerConnection>scm:git:git@github.com:marcosemiao/jsp-compile-listener.git</developerConnection>
+		<url>git@github.com:marcosemiao/jsp-compile-listener.git</url>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.java.version>1.5</project.build.java.version>
 	</properties>
 
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
 			<scope>provided</scope>
-			<version>[7.0.0,7.0.47]</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-catalina</artifactId>
-			<scope>provided</scope>
-			<version>[7.0.0,7.0.47]</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jasper</artifactId>
-			<scope>provided</scope>
-			<version>[7.0.0,7.0.47]</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-coyote</artifactId>
-			<scope>provided</scope>
-			<version>[7.0.0,7.0.47]</version>
+			<version>[7.0.0,7.0.59]</version>
 		</dependency>
 	</dependencies>
-	
-		<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
 
 	<build>
-		<!-- Permet de deployer les artifact avec le protocol webdav -->
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.2</version>
-			</extension>
-		</extensions>
-
-		<!-- Permet d'uniformiser aux niveaux des pom parents la configuration 
-			et la version des plugins si celui-ci est utilisés -->
 		<pluginManagement>
 			<plugins>
-				<!-- Plugin permettant le nettoyage du projet -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.6.1</version>
-				</plugin>
-
-				<!-- Plugin permettant de gérer les ressources -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.7</version>
-				</plugin>
-
-				<!-- Plugin permettant la compilation -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-						<showDeprecation>true</showDeprecation>
-						<optimize>true</optimize>
-					</configuration>
-				</plugin>
-
-				<!-- Plugin permettant de générer le jar -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.5</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>test-jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<!-- Plugin permettant de générer le war -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.5</version>
-					<configuration>
-						<attachClasses>true</attachClasses>
-					</configuration>
-				</plugin>
-
 				<!-- Plugin permettant de générer le code source -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -141,67 +97,22 @@
 					</executions>
 				</plugin>
 
-				<!-- Plugin permettant de générer les tests unitaires -->
+				<!-- Plugin permettant de signer les artifacts -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.18</version>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.6</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 
-				<!-- Plugin permettant de construire des archives -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.3</version>
-				</plugin>
-
-				<!-- Permet de generer les packaging -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-shade-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-						<dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
-						<transformers>
-							<transformer
-								implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-						</transformers>
-					</configuration>
-				</plugin>
-
-				<!-- Plugin permettant d'installer sur le repository local -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.2</version>
-				</plugin>
-
-				<!-- Plugin permettant de deployer sur les repository distant -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
-				</plugin>
-
-				<!-- Plugin permettant de generer le site -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.4</version>
-				</plugin>
-
-				<!-- Permet de tagguer une version -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.1</version>
-					<configuration>
-						<goals>deploy</goals>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-					</configuration>
-				</plugin>
-
-				<!-- Plugins Optionnels en fonction d'un profil -->
 				<!-- Plugin JRebel - permet de deployer a chaud -->
 				<plugin>
 					<groupId>org.zeroturnaround</groupId>
@@ -231,27 +142,15 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
 
-			<!-- Uniquement la tache compile pour la rétro-compatiblité -->
+			<!-- Plugin permettant de signer les artifacts -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>default-compile</id>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<source>${java.compatible.version}</source>
-							<target>${java.compatible.version}</target>
-						</configuration>
-					</execution>
-				</executions>
+				<artifactId>maven-gpg-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
 
-	<!-- Profil pour le developpement -->
+	<!-- Profil pour le développement -->
 	<profiles>
 		<profile>
 			<id>dev</id>

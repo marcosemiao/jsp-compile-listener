@@ -3,8 +3,10 @@
 	xsi:schemaLocation="
         http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
 	version="3.0">
+
 	<listener>
 		<display-name>Jsp Compile Listener</display-name>
-		<listener-class>fr.ms.tomcat.servlet.listener.JspCompileListener</listener-class>
+		<listener-class>fr.ms.tomcat.listener.jsp.JspCompileListener</listener-class>
 	</listener>
+
 </web-fragment>
