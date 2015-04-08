@@ -1,7 +1,7 @@
 # Jsp Compile Listener
 
 ## Fonctionnalités générales
-Cet outil est un listener Web pour Tomcat permettant de compiler au démarrage tous les fichiers JSP contenant dans l'application.
+Cet outil est un listener Web pour Tomcat permettant de compiler au démarrage tous les fichiers JSP contenus dans l'application.
 - Compatible à partir de la version Java 5.
 - Compatible toutes versions de Tomcat exceptées Tomcat 8 (version bientôt disponible).
 - Facile d'utilisation, il suffit de rajouter la dépendance dans votre application.
