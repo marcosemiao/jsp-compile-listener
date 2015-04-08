@@ -3,7 +3,7 @@
 ## Fonctionnalités générales
 Cet outil est un listener Web pour Tomcat permettant de compiler au démarrage tous les fichiers JSP contenant dans l'application.
 - Compatible à partir de la version Java 5.
-- Compatible toutes versions de Tomcat excepté Tomcat 8 (version bientôt disponible).
+- Compatible toutes versions de Tomcat exceptées Tomcat 8 (version bientôt disponible).
 - Facile d'utilisation, il suffit de rajouter la dépendance dans votre application.
 - A partir de Servlet 3, il n'est plus nécessaire de rajouter le listener dans le descripteur de déploiement (web.xml)
 - Disponible sur le repository central de Maven.
