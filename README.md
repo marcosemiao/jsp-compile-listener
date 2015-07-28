@@ -18,6 +18,7 @@ Il y a 2 étapes au maximum à effectuer pour l'utiliser :
 	<groupId>com.github.marcosemiao.tomcat.listener</groupId>
 	<artifactId>jsp-compile-listener</artifactId>
 	<version>1.0.0</version>
+    <scope>runtime</scope>
 </dependency>
 ````
 
