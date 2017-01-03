@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/marcosemiao/jsp-compile-listener.png?branch=master)](https://travis-ci.org/marcosemiao/jsp-compile-listener) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.marcosemiao.jsp-compile-listener/jsp-compile-listener/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.marcosemiao.jsp-compile-listener/jsp-compile-listener)
+
 # Jsp Compile Listener
 
 ## Fonctionnalités générales
