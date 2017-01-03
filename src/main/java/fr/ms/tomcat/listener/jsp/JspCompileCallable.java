@@ -16,6 +16,8 @@
  */
 package fr.ms.tomcat.listener.jsp;
 
+import java.util.concurrent.Callable;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Marco Semiao
  * 
  */
-class JspCompileRunnable implements Runnable {
+class JspCompileCallable implements Callable<Boolean> {
 
 	private final ServletContext servletContext;
 	private final String path;
@@ -53,7 +55,7 @@ class JspCompileRunnable implements Runnable {
 	 *            la {@link HttpServletRequest réponse} à utiliser pour la
 	 *            compilation.
 	 */
-	JspCompileRunnable(final ServletContext servletContext, final String path, final HttpServletRequest request,
+	JspCompileCallable(final ServletContext servletContext, final String path, final HttpServletRequest request,
 			final HttpServletResponse response) {
 		this.servletContext = servletContext;
 		this.path = path;
@@ -61,20 +63,22 @@ class JspCompileRunnable implements Runnable {
 		this.response = response;
 	}
 
-	public void run() {
+	public Boolean call() throws Exception {
 		final RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(path);
 
 		if (requestDispatcher == null) {
-			return;
+			return false;
 		}
 
-		String contextPath = servletContext.getContextPath();
+		final String contextPath = servletContext.getContextPath();
 		try {
 
 			System.out.println("Compiling : " + contextPath + path);
 			requestDispatcher.include(request, response);
+			return true;
 		} catch (final Exception e) {
-			System.out.println("Not Compiling : " + contextPath + path);
+			System.out.println("Not Compiling : " + contextPath + path + " - " + e.getMessage());
+			return false;
 			// Exception est déjà tracée par le logger de tomcat.
 			// Tomcat 7.0.50 - ApplicationDispatcher.invoke Line 772
 		}

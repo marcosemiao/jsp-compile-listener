@@ -16,9 +16,13 @@
  */
 package fr.ms.tomcat.listener.jsp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Executor;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import javax.servlet.ServletContext;
@@ -53,16 +57,21 @@ public class JspCompileListener implements ServletContextListener {
 		// Création un executor avec un seul thread daemon et la priorité la
 		// plus basse.
 		final ThreadFactory threadFactory = new JspCompileThreadFactory(servletContext.getContextPath());
-		final Executor executorService = Executors.newSingleThreadExecutor(threadFactory);
+		final ExecutorService executorService = Executors.newSingleThreadExecutor(threadFactory);
 
 		// Création d'un requete et d'une réponse pour la compilation
 		final HttpServletRequest request = JspCompileHelper.createHttpServletRequest();
 		final HttpServletResponse response = JspCompileHelper.createHttpServletResponse();
 
+		final List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 		for (final String jsp : jsps) {
-			final Runnable task = new JspCompileRunnable(servletContext, jsp, request, response);
-			executorService.execute(task);
+			final Callable<Boolean> task = new JspCompileCallable(servletContext, jsp, request, response);
+			final Future<Boolean> f = executorService.submit(task);
+			futures.add(f);
 		}
+		final Runnable task = new JspFinishTaskRunnable(jsps, futures);
+		executorService.execute(task);
+
 	}
 
 	public void contextDestroyed(final ServletContextEvent sce) {
