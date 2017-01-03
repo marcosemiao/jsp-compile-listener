@@ -20,13 +20,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Retourne une fabrique de thread en utilisant la fabrique par défaut de l'api standard
- * {@link Executors#defaultThreadFactory()}.<br>
- * Cette fabrique crée les threads comme la fabrique par défaut à l'exception :<br>
+ * Retourne une fabrique de thread en utilisant la fabrique par défaut de l'api
+ * standard {@link Executors#defaultThreadFactory()}.<br>
+ * Cette fabrique crée les threads comme la fabrique par défaut à l'exception
+ * :<br>
  * <br>
  * <ul>
- * <li>Le thread aura comme nom "<b>jspCompile</b>" suivi par le nom donné en parametre du constructeur. <br>
- * <b>Par exemple :</b> si name est "<b>/example</b>" le thread aura comme nom "<b>JspCompile /example</b>"
+ * <li>Le thread aura comme nom "<b>jspCompile</b>" suivi par le nom donné en
+ * parametre du constructeur. <br>
+ * <b>Par exemple :</b> si name est "<b>/example</b>" le thread aura comme nom
+ * "<b>JspCompile /example</b>"
  * <li>Le thread sera un thread démon.
  * <li>Le thread aura {@link Thread#MIN_PRIORITY la priorité minimale}.
  * <ul>
@@ -41,24 +44,24 @@ import java.util.concurrent.ThreadFactory;
  */
 class JspCompileThreadFactory implements ThreadFactory {
 
-  private final ThreadFactory threadFactory = Executors.defaultThreadFactory();
+	private final ThreadFactory threadFactory = Executors.defaultThreadFactory();
 
-  private final String name;
+	private final String name;
 
-  JspCompileThreadFactory(final String name) {
-    this.name = name;
-  }
+	JspCompileThreadFactory(final String name) {
+		this.name = name;
+	}
 
-  public Thread newThread(final Runnable r) {
-    final Thread newThread = threadFactory.newThread(r);
+	public Thread newThread(final Runnable r) {
+		final Thread newThread = threadFactory.newThread(r);
 
-    if (name != null) {
-      newThread.setName("jspCompile " + name);
-    }
+		if (name != null) {
+			newThread.setName("jspCompile " + name);
+		}
 
-    newThread.setDaemon(true);
-    newThread.setPriority(Thread.MIN_PRIORITY);
+		newThread.setDaemon(true);
+		newThread.setPriority(Thread.MIN_PRIORITY);
 
-    return newThread;
-  }
+		return newThread;
+	}
 }

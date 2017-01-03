@@ -28,7 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Ce Listener Web permet de compiler toutes les jsp d'une application durant son démarrage.
+ * Ce Listener Web permet de compiler toutes les jsp d'une application durant
+ * son démarrage.
  * <p>
  * Il crée un thread daemon permettant de compiler en tâche de fond.
  * 
@@ -40,28 +41,31 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class JspCompileListener implements ServletContextListener {
 
-  public void contextInitialized(final ServletContextEvent servletContextEvent) {
+	public void contextInitialized(final ServletContextEvent servletContextEvent) {
 
-    final ServletContext servletContext = servletContextEvent.getServletContext();
+		ServletContext servletContext = servletContextEvent.getServletContext();
 
-    // Récupere tous les fichiers jsp et jspx présent dans l'application.
-    final Set<String> jsps = JspCompileHelper.findFilesInDirectory(servletContext, "/", "jsp", "jspx");
+		servletContext = ServletContextDecorator.decorateServletContext(servletContext);
 
-    // Création un executor avec un seul thread daemon et la priorité la plus basse.
-    final ThreadFactory threadFactory = new JspCompileThreadFactory(servletContext.getContextPath());
-    final Executor executorService = Executors.newSingleThreadExecutor(threadFactory);
+		// Récupere tous les fichiers jsp et jspx présent dans l'application.
+		final Set<String> jsps = JspCompileHelper.findFilesInDirectory(servletContext, "/", "jsp", "jspx");
 
-    // Création d'un requete et d'une réponse pour la compilation
-    final HttpServletRequest request = JspCompileHelper.createHttpServletRequest();
-    final HttpServletResponse response = JspCompileHelper.createHttpServletResponse();
+		// Création un executor avec un seul thread daemon et la priorité la
+		// plus basse.
+		final ThreadFactory threadFactory = new JspCompileThreadFactory(servletContext.getContextPath());
+		final Executor executorService = Executors.newSingleThreadExecutor(threadFactory);
 
-    for (final String jsp : jsps) {
-      final Runnable task = new JspCompileRunnable(servletContext, jsp, request, response);
-      executorService.execute(task);
-    }
-  }
+		// Création d'un requete et d'une réponse pour la compilation
+		final HttpServletRequest request = JspCompileHelper.createHttpServletRequest();
+		final HttpServletResponse response = JspCompileHelper.createHttpServletResponse();
 
-  public void contextDestroyed(final ServletContextEvent sce) {
+		for (final String jsp : jsps) {
+			final Runnable task = new JspCompileRunnable(servletContext, jsp, request, response);
+			executorService.execute(task);
+		}
+	}
 
-  }
+	public void contextDestroyed(final ServletContextEvent sce) {
+
+	}
 }

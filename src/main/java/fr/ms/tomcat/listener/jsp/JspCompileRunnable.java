@@ -32,42 +32,51 @@ import javax.servlet.http.HttpServletResponse;
  */
 class JspCompileRunnable implements Runnable {
 
-  private final ServletContext servletContext;
-  private final String path;
+	private final ServletContext servletContext;
+	private final String path;
 
-  private final HttpServletRequest request;
-  private final HttpServletResponse response;
+	private final HttpServletRequest request;
+	private final HttpServletResponse response;
 
-  /**
-   * Créer une instance de {@link Runnable} permettant de réaliser un include sur un ressource.
-   * 
-   * @param servletContext La {@link ServletContext} à utiliser pour la compilation.
-   * @param path Le chemin d'accès de la ressource.
-   * @param request la {@link HttpServletRequest requete} à utiliser pour la compilation.
-   * @param response la {@link HttpServletRequest réponse} à utiliser pour la compilation.
-   */
-  JspCompileRunnable(final ServletContext servletContext, final String path, final HttpServletRequest request,
-      final HttpServletResponse response) {
-    this.servletContext = servletContext;
-    this.path = path;
-    this.request = request;
-    this.response = response;
-  }
+	/**
+	 * Créer une instance de {@link Runnable} permettant de réaliser un include
+	 * sur un ressource.
+	 * 
+	 * @param servletContext
+	 *            La {@link ServletContext} à utiliser pour la compilation.
+	 * @param path
+	 *            Le chemin d'accès de la ressource.
+	 * @param request
+	 *            la {@link HttpServletRequest requete} à utiliser pour la
+	 *            compilation.
+	 * @param response
+	 *            la {@link HttpServletRequest réponse} à utiliser pour la
+	 *            compilation.
+	 */
+	JspCompileRunnable(final ServletContext servletContext, final String path, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		this.servletContext = servletContext;
+		this.path = path;
+		this.request = request;
+		this.response = response;
+	}
 
-  public void run() {
+	public void run() {
+		final RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(path);
 
-    final RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(path);
+		if (requestDispatcher == null) {
+			return;
+		}
 
-    if (requestDispatcher == null) {
-      return;
-    }
+		String contextPath = servletContext.getContextPath();
+		try {
 
-    try {
-      servletContext.log("Compiling : " + servletContext.getContextPath() + path);
-      requestDispatcher.include(request, response);
-    } catch (final Exception e) {
-      // Exception est déjà tracée par le logger de tomcat.
-      // Tomcat 7.0.50 - ApplicationDispatcher.invoke Line 772
-    }
-  }
+			System.out.println("Compiling : " + contextPath + path);
+			requestDispatcher.include(request, response);
+		} catch (final Exception e) {
+			System.out.println("Not Compiling : " + contextPath + path);
+			// Exception est déjà tracée par le logger de tomcat.
+			// Tomcat 7.0.50 - ApplicationDispatcher.invoke Line 772
+		}
+	}
 }
