@@ -36,12 +36,12 @@ import javax.servlet.http.HttpServletResponse;
  * son démarrage.
  * <p>
  * Il crée un thread daemon permettant de compiler en tâche de fond.
- * 
+ *
  * @see <a href="http://marcosemiao4j.wordpress.com">Marco4J</a>
  * @see <a href="https://github.com/marcosemiao/jsp-compile-listener">GitHub</a>
- * 
+ *
  * @author Marco Semiao
- * 
+ *
  */
 public class JspCompileListener implements ServletContextListener {
 
@@ -69,7 +69,7 @@ public class JspCompileListener implements ServletContextListener {
 			final Future<Boolean> f = executorService.submit(task);
 			futures.add(f);
 		}
-		final Runnable task = new JspFinishTaskRunnable(jsps, futures);
+		final Runnable task = new JspFinishTaskRunnable(servletContext, jsps, futures);
 		executorService.execute(task);
 
 	}

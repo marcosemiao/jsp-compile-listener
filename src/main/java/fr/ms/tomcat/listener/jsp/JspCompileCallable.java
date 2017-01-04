@@ -25,12 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Permet d'avoir une instance par ressource pour une invocation de celle-ci.
- * 
+ *
  * @see <a href="http://marcosemiao4j.wordpress.com">Marco4J</a>
  * @see <a href="https://github.com/marcosemiao/jsp-compile-listener">GitHub</a>
- * 
+ *
  * @author Marco Semiao
- * 
+ *
  */
 class JspCompileCallable implements Callable<Boolean> {
 
@@ -43,7 +43,7 @@ class JspCompileCallable implements Callable<Boolean> {
 	/**
 	 * Créer une instance de {@link Runnable} permettant de réaliser un include
 	 * sur un ressource.
-	 * 
+	 *
 	 * @param servletContext
 	 *            La {@link ServletContext} à utiliser pour la compilation.
 	 * @param path
@@ -79,8 +79,6 @@ class JspCompileCallable implements Callable<Boolean> {
 		} catch (final Exception e) {
 			System.out.println("Not Compiling : " + contextPath + path + " - " + e.getMessage());
 			return false;
-			// Exception est déjà tracée par le logger de tomcat.
-			// Tomcat 7.0.50 - ApplicationDispatcher.invoke Line 772
 		}
 	}
 }

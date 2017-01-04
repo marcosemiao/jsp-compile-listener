@@ -5,12 +5,18 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.servlet.ServletContext;
+
 public class JspFinishTaskRunnable implements Runnable {
+
+	private final ServletContext servletContext;
 
 	private final Set<String> jsps;
 	private final List<Future<Boolean>> futures;
 
-	public JspFinishTaskRunnable(final Set<String> jsps, final List<Future<Boolean>> futures) {
+	public JspFinishTaskRunnable(final ServletContext servletContext, final Set<String> jsps,
+			final List<Future<Boolean>> futures) {
+		this.servletContext = servletContext;
 		this.jsps = jsps;
 		this.futures = futures;
 	}
@@ -32,7 +38,9 @@ public class JspFinishTaskRunnable implements Runnable {
 				}
 			}
 
-			System.out.println(compiles + " successful compilation on " + total);
+			final String contextPath = servletContext.getContextPath();
+
+			System.out.println(contextPath + " : " + compiles + " successful compilation on " + total);
 		}
 	}
 }
